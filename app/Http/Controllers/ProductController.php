@@ -31,23 +31,53 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $regras = [
             'name'        => 'required|string|max:255',
             'description' => 'required|string|max:800',
-        ]);
+            'photos'      => 'required|min:2'
+        ];
+        $feedback = [
+            'name.required' => ':attribute é obrigatório',
+            'photos' => 'A imagem é obrigatória',
+            'photos' => 'No mínimo duas fotos'
+        ];
 
+        $request->validate($regras, $feedback);
+
+        
         $product = new Product;
         $product->name = $request->name;
         $product->description = $request->description;
         $product->save();
+        
+        if ($request->hasFile('photos')) {
 
-        foreach ($request->file('images') as $imagefile) {
-            
-            $image = new Image;
-            $image->url = $request->image->move(public_path('images'), $imagefile);;
-            $image->product_id = $product->id;
-            $image->save();
+            $allowedfileExtension=['pdf', 'jpg', 'png', 'docx'];
+            $files = $request->file('photos');
+
+            foreach ($files as $file) {
+
+                $fileName = now().'-'.$file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $check = in_array($extension, $allowedfileExtension);
+
+                if ($check) {
+
+                    $url = $file->storeAs('images', $fileName);
+                    Image::create([
+                        'url' => $url,
+                        'product_id' => $product->id,
+                    ]);
+
+                }
+                
+                return redirect()->route('products.index')->with('success', 'Produto criado!');
+            }
+
+
         }
+
+
     }
 
     /**
