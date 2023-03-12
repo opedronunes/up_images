@@ -4,16 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+
+        $this->productService = $productService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::with('images')->get();
+        $products = $this->productService->getAllProducts();
+        //$products = Product::with('images')->get();
         //dd($products);
         return view('Product.index', ['products' => $products]);
     }
