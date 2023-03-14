@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Image;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -39,8 +40,9 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
+        /*
         $regras = [
             'name'        => 'required|string|max:255',
             'description' => 'required|string|max:800',
@@ -51,43 +53,16 @@ class ProductController extends Controller
             'photos' => 'A imagem é obrigatória',
             'photos' => 'No mínimo duas fotos'
         ];
+        */
+        //$request->validated($regras, $feedback);
 
-        $request->validate($regras, $feedback);
+        $this->productService->addProduct(
+            $request->validated('name'),
+            $request->validated('description'),
+            $request->validated('photos'),
+        );        
 
-        
-        $product = new Product;
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->save();
-        
-        if ($request->hasFile('photos')) {
-
-            $allowedfileExtension=['pdf', 'jpg', 'png', 'docx'];
-            $files = $request->file('photos');
-
-            foreach ($files as $file) {
-
-                $fileName = now().'-'.$file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
-                $check = in_array($extension, $allowedfileExtension);
-
-                if ($check) {
-
-                    $url = $file->storeAs('images', $fileName);
-                    Image::create([
-                        'url' => $url,
-                        'product_id' => $product->id,
-                    ]);
-
-                }
-                
-                return redirect()->route('products.index')->with('success', 'Produto criado!');
-            }
-
-
-        }
-
-
+        return redirect()->route('products.index')->with('success', 'Produto criado!');
     }
 
     /**
@@ -109,7 +84,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update( Product $product)
     {
         //
     }
