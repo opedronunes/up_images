@@ -11,19 +11,6 @@
         <div class="row">
             <div class="col-12">
                 <div class="d-flex flex-column">
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $erro)
-                                    <li>{{ $erro }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @elseif (session('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
                     <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="mb-3">

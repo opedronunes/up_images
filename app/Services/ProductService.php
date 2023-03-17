@@ -2,29 +2,31 @@
 
 namespace App\Services;
 
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Image;
 use App\Models\Product;
+use App\Repositories\ProductRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class ProductService{
-
-    public function getAllProducts(){
-
-        return Product::get();
-
+class ProductService
+{
+    public function getList()
+    {
+        return Product::all();
     }
 
-    public function addProduct(Request $request){
+    public function addProduct(StoreProductRequest $storeProductRequest){
 
         $product = new Product;
-        $product->name = $request->name;
-        $product->description = $request->description;
+        $product->name = $storeProductRequest->name;
+        $product->description = $storeProductRequest->description;
         $product->save();
         
-        if ($request->hasFile('photos')) {
+        if ($storeProductRequest->hasFile('photos')) {
 
             $allowedfileExtension=['pdf', 'jpg', 'png', 'docx'];
-            $files = $request->file('photos');
+            $files = $storeProductRequest->file('photos');
 
             foreach ($files as $file) {
 
@@ -35,7 +37,7 @@ class ProductService{
                 if ($check) {
 
                     $url = $file->storeAs('images', $fileName);
-                    return Image::create([
+                    Image::create([
                         'url' => $url,
                         'product_id' => $product->id,
                     ]);
@@ -44,5 +46,55 @@ class ProductService{
             }
         }
     }
+
+    public function getProduct($id)
+    {
+        return Product::find($id);
+    }
+
+    /*
+    private $repo;
+
+    public function __construct(ProductRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
+
+    public function store(array $data)
+    {
+        
+        return $this->repo->store($data);
+    }
+
+    public function getList()
+    {
+        return $this->repo->getList();
+    }
+
+    public function get($id)
+    {
+        return $this->repo->get($id);
+    }
+
+    public function update(array $data, $id)
+    {
+        return $this->repo->update($data, $id);
+    }
+
+    public function destroy($id)
+    {
+        return $this->repo->destroy($id);
+    }
+
+    /*
+    public function getAllProducts(){
+
+        return Product::get();
+
+    }
+    */
+
+    
+    
 
 }

@@ -3,13 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
-use App\Models\Image;
-use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    private $service;
+
+    public function __construct(ProductService $service)
+    {
+        $this->service = $service;
+    }
+
+    public function index()
+    {
+        $products = $this->service->getList();
+
+        return view('Product.index', compact('products'));
+    }
+
+    public function store(StoreProductRequest $storeProductRequest)
+    {
+        $this->service->addProduct($storeProductRequest);
+
+        return redirect()->route('products.index')->with('success', 'Produto criado!');
+
+    }
+
+
+    public function create()
+    {
+        return view('Product.create');
+    }
+
+    public function show($id)
+    {
+        $product = $this->service->getProduct($id);
+
+        return view('', ['product' => $product]);
+    }
+
+    public function update(StoreProductRequest $storeProductRequest, $id)
+    {
+        /*
+        return $this->service->update([
+            'name' => $storeProductRequest->name,
+            'description' => $storeProductRequest->description,
+            'image' => $storeProductRequest->image,
+        ], $id);
+        */
+    }
+
+    public function destroy($id)
+    {
+        /*
+        return $this->service->destroy($id);
+        */
+    }
+
+    /*
+    
     protected $productService;
 
     public function __construct(ProductService $productService)
@@ -18,9 +71,7 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $products = $this->productService->getAllProducts();
@@ -29,19 +80,16 @@ class ProductController extends Controller
         return view('Product.index', ['products' => $products]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('Product.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreProductRequest $request)
+    public function store(StoreProductRequest $storeProductRequest)
     {
+
+        
+
         /*
         $regras = [
             'name'        => 'required|string|max:255',
@@ -56,44 +104,37 @@ class ProductController extends Controller
         */
         //$request->validated($regras, $feedback);
 
+        /*
         $this->productService->addProduct(
-            $request->validated('name'),
-            $request->validated('description'),
-            $request->validated('photos'),
+            $storeProductRequest->validated('name'),
+            $storeProductRequest->validated('description'),
+            $storeProductRequest->validated('photos'),
         );        
 
         return redirect()->route('products.index')->with('success', 'Produto criado!');
     }
-
-    /**
-     * Display the specified resource.
-     */
+    
+    */
+    /*
     public function show(Product $product)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Product $product)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update( Product $product)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+ 
     public function destroy(Product $product)
     {
         //
     }
+    */
 }

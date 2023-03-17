@@ -10,11 +10,24 @@
             </div>
         </div>
         <table class="table">
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $erro)
+                            <li>{{ $erro }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @elseif (session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
             <thead>
                 <tr>
-                    <th>Foto</th>
                     <th>Nome</th>
                     <th>Descrição</th>
+                    <th>Imagens</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
@@ -22,9 +35,9 @@
             <tbody>
                 @foreach ($products as $product)
                     <tr>
-                        <td></td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->description }}</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                     </tr>
