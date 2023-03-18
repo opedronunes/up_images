@@ -37,7 +37,13 @@
                     <tr>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->description }}</td>
-                        <td></td>
+                        <td>
+                            @foreach($product->images as $pimages)    
+                            <!--$pdctImage = $product->images[0]->images_thumbnail;
+                            dd($pdctImage);   -->                                     
+                            <img src="{{ $pimages->url }}" alt="ProjectImage" class="img-thumbnail" style="width: 50%; height: 50px;"/>
+                            @endforeach 
+                        </td>
                         <td></td>
                         <td></td>
                     </tr>
