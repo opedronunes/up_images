@@ -23,29 +23,37 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <thead>
+            <thead class="text-center">
                 <tr>
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Imagens</th>
+                    <th>Visualizar</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($products as $product)
-                    <tr>
+                    <tr class="text-center">
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->description }}</td>
                         <td>
-                            @foreach($product->images as $pimages)    
-                            <!--$pdctImage = $product->images[0]->images_thumbnail;
-                            dd($pdctImage);   -->                                     
-                            <img src="{{ $pimages->url }}" alt="ProjectImage" class="img-thumbnail" style="width: 50%; height: 50px;"/>
-                            @endforeach 
+                            <div class="d-flex flex-column flex-md-row gap-2 justify-content-center">
+                                @foreach($product->images as $pimages)
+                                <img src="../../../storage/{{ $pimages->url }}" alt="ProjectImage" class="img-thumbnail w-25 h-25 p-0"/>
+                                @endforeach 
+                            </div>
                         </td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <a href="{{ route('products.show', $product->id) }}">Visualizar</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-warning" href="">editar</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-danger" href="">excluir</a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

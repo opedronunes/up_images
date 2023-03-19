@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Services\ProductService;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -15,11 +16,13 @@ class ProductController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->service->getList(); 
+        $products = $this->service->getList();
+        
+        //dd($products);
 
-        return view('Product.index', compact('products'));
+        return view('Product.index', compact('products'), ['request' => $request->all()]);
     }
 
     public function store(StoreProductRequest $storeProductRequest)
@@ -40,7 +43,9 @@ class ProductController extends Controller
     {
         $product = $this->service->getProduct($id);
 
-        return view('', ['product' => $product]);
+        //dd($product);
+
+        return view('Product.show', ['product' => $product]);
     }
 
     public function update(StoreProductRequest $storeProductRequest, $id)

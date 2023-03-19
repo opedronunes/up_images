@@ -1,19 +1,17 @@
 <?php
 
 namespace App\Services;
-
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Image;
 use App\Models\Product;
 use App\Repositories\ProductRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class ProductService
 {
     public function getList()
     {
-        return Product::all();
+        return Product::with(['images'])->paginate(5);
     }
 
     public function addProduct(StoreProductRequest $storeProductRequest){
@@ -49,7 +47,7 @@ class ProductService
 
     public function getProduct($id)
     {
-        return Product::find($id);
+        return Product::with(['images']);
     }
 
     /*

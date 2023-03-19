@@ -12,9 +12,10 @@ class ImageController extends Controller
      */
     public function index(Request $request)
     {
-        $images = Image::with('product')->paginate(5);
+        $images = Image::with(['products']);
 
-        return view('ImageProduct.index', ['images' => $images, 'request' => $request->all()]);
+        //return view('ImageProduct.index', ['images' => $images]);
+        return view('ImageProduct.index', compact('images'));
     }
 
     /**
