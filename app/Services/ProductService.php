@@ -50,6 +50,21 @@ class ProductService
         return Product::with(['images']);
     }
 
+    public function editProduct(Product $product)
+    {
+        return Product::with(['images']);
+    }
+
+    public function updateProduct(StoreProductRequest $storeProductRequest, $id)
+    {
+        
+    }
+
+    public function destroyProduct(Product $product)
+    {
+        $product->delete();
+    }
+
     /*
     private $repo;
 

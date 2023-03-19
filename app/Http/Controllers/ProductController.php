@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -39,13 +40,20 @@ class ProductController extends Controller
         return view('Product.create');
     }
 
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = $this->service->getProduct($id);
+        $this->service->getProduct($product);
 
         //dd($product);
 
         return view('Product.show', ['product' => $product]);
+    }
+
+    public function edit(Product $product)
+    {
+        $this->service->editProduct($product);
+
+        return view('Product.edit', ['product' => $product]);
     }
 
     public function update(StoreProductRequest $storeProductRequest, $id)
@@ -59,8 +67,11 @@ class ProductController extends Controller
         */
     }
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
+        $this->service->destroyProduct($product);
+
+        return redirect()->route('products.index')->with('success', 'Produto excluido!');
         /*
         return $this->service->destroy($id);
         */
