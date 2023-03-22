@@ -20,5 +20,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/products', ProductController::class);
-Route::resource('/images', ImageController::class);
+Route::resource('products', ProductController::class);
+Route::resource('product-images', ImageController::class);

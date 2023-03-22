@@ -52,6 +52,7 @@ class ProductService
 
     public function editProduct(Product $product)
     {
+        
         return Product::with(['images']);
     }
 

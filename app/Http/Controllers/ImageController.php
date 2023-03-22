@@ -12,10 +12,13 @@ class ImageController extends Controller
      */
     public function index(Request $request)
     {
-        $images = Image::with(['products']);
+        $images = Image::with(['products'])->paginate(5);
+
+        //dd($images);
 
         //return view('ImageProduct.index', ['images' => $images]);
-        return view('ImageProduct.index', compact('images'));
+        //return view('ImageProduct.index', compact('images'));
+        return view('ImageProduct.index', compact('images'), ['request' => $request->all()]);
     }
 
     /**
@@ -63,6 +66,9 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        //
+        dd($image);
+        $image->delete();
+
+        return redirect()->route('images.update')->with('success', 'Imagem deletada!');
     }
 }

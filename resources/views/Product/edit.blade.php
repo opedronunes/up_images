@@ -10,6 +10,19 @@
         <div class="row">
             <div class="col-12">
                 <div class="d-flex flex-column">
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $erro)
+                                    <li>{{ $erro }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @elseif (session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <form action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -27,7 +40,7 @@
                                 <div class="d-flex flex-column w-auto h-100 gap-2">
                                     <img src="../../../storage/{{ $pimages->url }}" value="{{ $pimages->url ?? old('url') }}" class="w-100 rounded" alt="">
                                     <div class="my-3">
-                                        <a href="" class="btn btn-sm btn-secondary">excluir</a>
+                                        <a href="{{ route('images.destroy', $pimages->id) }}" class="btn btn-sm btn-secondary">excluir</a>
                                     </div>
                                 </div>
                                 
