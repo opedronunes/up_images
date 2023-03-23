@@ -7,6 +7,19 @@
                 <a href="" class="btn btn-sm btn-success">Novo</a>
             </div>
         </div>
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $erro)
+                        <li>{{ $erro }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @elseif (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
         <table class="table">
             <thead>
                 <tr>
@@ -21,14 +34,19 @@
                 @foreach ($images as $image)
                     <tr>
                         <td>
-                            
-                            <img src="../../../storage/{{ $image->url }}" alt="ProjectImage" class="img-thumbnail" style="width: 50%; height: 50px;"/> 
-                                                            
+                            <img src="../../../storage/{{ $image->url }}" alt="ProjectImage" class="img-thumbnail" style="width: 50%; height: 50px;"/>                                 
                         </td>
-                        <td>{{ $image->products->name }}</td>
-                        <td>{{ $image->products->description }}</td>
+                        <td>{{ $image->product->name }}</td>
+                        <td>{{ $image->product->description }}</td>
                         <td></td>
-                        <td></td>
+                        <td>
+                            <form id="form_{{ $image->id }}" action="{{ route('product-images.destroy', $image->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <!--<button type="submit">Excluir</button>-->
+                                <a class="btn btn-sm btn-danger" href="#" onclick="document.getElementById('form_{{ $image->id }}').submit()">Excluir</a>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

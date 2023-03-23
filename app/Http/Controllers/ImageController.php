@@ -12,7 +12,7 @@ class ImageController extends Controller
      */
     public function index(Request $request)
     {
-        $images = Image::with(['products'])->paginate(5);
+        $images = Image::with(['product'])->paginate(5);
 
         //dd($images);
 
@@ -64,11 +64,12 @@ class ImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Image $image)
+    public function destroy(Image $image, $id)
     {
-        dd($image);
+        //dd($image);
+        $image = Image::find($id);
         $image->delete();
 
-        return redirect()->route('images.update')->with('success', 'Imagem deletada!');
+        return redirect()->route('product-images.index')->with('success', 'Imagem deletada!');
     }
 }

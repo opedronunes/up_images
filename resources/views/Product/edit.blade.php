@@ -40,7 +40,7 @@
                                 <div class="d-flex flex-column w-auto h-100 gap-2">
                                     <img src="../../../storage/{{ $pimages->url }}" value="{{ $pimages->url ?? old('url') }}" class="w-100 rounded" alt="">
                                     <div class="my-3">
-                                        <a href="{{ route('images.destroy', $pimages->id) }}" class="btn btn-sm btn-secondary">excluir</a>
+                                        <a href="{{ route('product-images.destroy', $pimages->id) }}" class="btn btn-sm btn-secondary">excluir</a>
                                     </div>
                                 </div>
                                 
