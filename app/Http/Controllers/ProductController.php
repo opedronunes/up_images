@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\StoreProductRequest;
+use App\Models\Image;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -25,9 +27,11 @@ class ProductController extends Controller
         return view('Product.index', compact('products'), ['request' => $request->all()]);
     }
 
-    public function store(StoreProductRequest $storeProductRequest)
+    public function store(StoreProductRequest $storeProductRequest, StoreImageRequest $storeImageRequest, Product $product)
     {
-        $this->service->addProduct($storeProductRequest);
+        $data = $storeProductRequest->validated();
+
+        $this->service->addProduct($data);
 
         return redirect()->route('products.index')->with('success', 'Produto criado!');
     }
