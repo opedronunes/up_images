@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -31,7 +30,6 @@ class ProductController extends Controller
         $this->service->addProduct($storeProductRequest);
 
         return redirect()->route('products.index')->with('success', 'Produto criado!');
-
     }
 
 
