@@ -14,34 +14,20 @@ class ProductService
         return Product::with(['images'])->paginate(5);
     }
 
-    public function addProduct(StoreProductRequest $storeProductRequest){
+    public function addProduct(array $data){
 
-        $product = new Product;
-        $product->name = $storeProductRequest->name;
-        $product->description = $storeProductRequest->description;
-        $product->save();
-        
-        if ($storeProductRequest->hasFile('photos')) {
+        $product = Product::create([
+            'name' => $data['name'],
+            'description' => $data['description'],
 
-            $allowedfileExtension=['pdf', 'jpg', 'png', 'docx'];
-            $files = $storeProductRequest->file('photos');
+        ]);
 
-            foreach ($files as $file) {
-
-                $fileName = now().'-'.$file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
-                $check = in_array($extension, $allowedfileExtension);
-
-                if ($check) {
-
-                    $url = $file->storeAs('images', $fileName);
-                    Image::create([
-                        'url' => $url,
-                        'product_id' => $product->id,
-                    ]);
-
-                }
-            }
+        foreach ($data['photos'] as $photo) {
+            $fileName = now().'-'.$photo->getClientOriginalName();
+            $product->images()->create([
+                'url' => $photo->storeAs('images', $fileName),
+                'product_id' => $product->id
+            ]);
         }
     }
 

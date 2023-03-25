@@ -11,15 +11,24 @@
         <div class="row">
             <div class="col-12">
                 <div class="d-flex flex-column">
+                    @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $erro)
+                                <li>{{ $erro }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                     <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="mb-3">
                             <label for="name" class="form-label">Nome:</label>
-                            <input type="text" name="name" id="name" placeholder="Digite o nome do produto" class="form-control">
+                            <input type="text" name="name" id="name" value="{{old('name')}}" placeholder="Digite o nome do produto" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Descrição:</label>
-                            <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                            <input class="form-control" name="description" value="{{old('description')}}" id="description">
                         </div>
                         <div class="mb-3">
                             <label for="photos" class="form-label">Imagen:</label>

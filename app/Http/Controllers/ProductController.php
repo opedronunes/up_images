@@ -27,9 +27,9 @@ class ProductController extends Controller
         return view('Product.index', compact('products'), ['request' => $request->all()]);
     }
 
-    public function store(StoreProductRequest $storeProductRequest, StoreImageRequest $storeImageRequest, Product $product)
+    public function store(StoreProductRequest $request)
     {
-        $data = $storeProductRequest->validated();
+        $data = $request->validated();
 
         $this->service->addProduct($data);
 
