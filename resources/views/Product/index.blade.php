@@ -3,10 +3,50 @@
 <x-layout>
 
     <section>
-        <div class="py-3 d-flex justify-content-between align-items-center">
+        <div class="py-5 d-flex justify-content-between align-items-center">
             <h4>Todos os Produtos</h4>
             <div>
-                <a href="{{ route('products.create') }}" class="btn btn-sm btn-success">Novo</a>
+                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Novo
+                </button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Novo produto</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex flex-column">
+                                            <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
+                                                {{ csrf_field() }}
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">Nome:</label>
+                                                    <input type="text" name="name" id="name" value="{{old('name')}}" placeholder="Digite o nome do produto" class="form-control">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="description" class="form-label">Descrição:</label>
+                                                    <input class="form-control" name="description" value="{{old('description')}}" id="description">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="photos" class="form-label">Imagen:</label>
+                                                    <input type="file" name="photos[]" id="photos" multiple class="form-control">
+                                                </div>
+                                                
+                                                <div class="d-flex justify-content-between py-2">
+                                                    <button class="btn btn-sm btn-primary" type="submit" >Criar</button>
+                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <table class="table">

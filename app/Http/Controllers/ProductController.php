@@ -8,6 +8,8 @@ use App\Models\Image;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -29,10 +31,27 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
+        try {
+            $data = $request->validated();
+            DB::beginTransaction();
+            $this->service->addProduct($data);
+            DB::commit();
+
+        }
+        catch(ValidationException $validation)
+        {
+            return redirect()->route('products.create')->with(['erro'=> $validation->getMessage()]);
+        }
+        
+        catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()->route('products.create')->with(['erro'=> $e->getMessage()]);
+        }
+        /*
         $data = $request->validated();
 
         $this->service->addProduct($data);
-
+        */
         return redirect()->route('products.index')->with('success', 'Produto criado!');
     }
 

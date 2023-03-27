@@ -19,6 +19,10 @@
                             @endforeach
                         </ul>
                     </div>
+                    @elseif (session('erro'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('erro') }}
+                        </div>
                     @endif
                     <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}

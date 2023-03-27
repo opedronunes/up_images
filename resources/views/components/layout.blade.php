@@ -9,6 +9,7 @@
     <title>Up Images - @yield('title')</title>
 </head>
 <body>
+    <x-header />
     <main class="container">
         {{ $slot }}
     </main>

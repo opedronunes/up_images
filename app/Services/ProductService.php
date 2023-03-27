@@ -16,6 +16,44 @@ class ProductService
 
     public function addProduct(array $data){
 
+        /*
+         try {
+            $this->validate($request, [
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'images' => 'required|array|min:2', //deve ser um array de imagens base64 (enviar convertida em bas64)
+            ]);
+
+            DB::beginTransaction();
+            $product = new Product();
+            $product->name = $request->title;
+            $product->description = $request->description;
+            $product->save();
+
+            $arrPathsImages = [];
+
+            foreach ($request->images as $image) {
+                $imageProduct = new ImagesProduct();
+                $imageContent = $this->getContent($image);
+                $imageExtension = $this->getExtension($image);
+                $imageName = uniqid() . '-image.' . $imageExtension;
+                $url = $this->saveDisk($imageName, $imageContent);
+                $imageProduct->url = $url;
+                $arrPathsImages[] = [uniqid() . '-image' => $url];
+                $imageProduct->product_id = $product->id;
+                $imageProduct->save();
+            }
+            DB::commit();
+        } catch (ValidationException $validation) {
+            return response()->json(['status' => false, 'error' => $validation->getMessage()], 400);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            //dd($e);
+            return response()->json(['status' => false, 'error' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => true, 'paths' => $arrPathsImages], 201);
+        */
+
         $product = Product::create([
             'name' => $data['name'],
             'description' => $data['description'],
