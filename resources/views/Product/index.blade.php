@@ -32,7 +32,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="photos" class="form-label">Imagen:</label>
-                                                    <input type="file" name="photos[]" id="photos" multiple class="form-control">
+                                                    <input type="file" name="photos[]" id="photos" value="{{ old('photos[]') }}" multiple class="form-control">
                                                 </div>
                                                 
                                                 <div class="d-flex justify-content-between py-2">
@@ -63,41 +63,36 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <thead class="text-center">
+            <thead>
                 <tr>
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Imagens</th>
-                    <th>Visualizar</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($products as $product)
-                    <tr class="text-center">
+                    <tr>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->description }}</td>
                         <td>
-                            <div class="d-flex flex-column flex-md-row gap-2 justify-content-center">
+                            <div class="d-flex flex-column flex-md-row gap-2">
                                 @foreach($product->images as $pimages)
-                                <img src="../../../storage/{{ $pimages->url }}" alt="ProjectImage" class="shadow img-thumbnail w-25 h-25 p-0"/>
+                                <img src="../../../storage/{{ $pimages->url }}" alt="ProjectImage" style="width: auto; height: 60px;" class="shadow rounded"/>
                                 @endforeach 
                             </div>
                         </td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="{{ route('products.show', $product->id) }}">Visualizar</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-sm btn-warning" href="{{ route('products.edit', $product->id) }}">editar</a>
-                        </td>
-                        <td>
-                            <form id="form_{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <!--<button type="submit">Excluir</button>-->
-                                <a class="btn btn-sm btn-danger" href="#" onclick="document.getElementById('form_{{ $product->id }}').submit()">Excluir</a>
-                            </form>
+                            <div class="d-flex gap-1">
+                                <a class="btn btn-sm btn-primary" href="{{ route('products.show', $product->id) }}">Visualizar</a>
+                                <a class="btn btn-sm btn-warning" href="{{ route('products.edit', $product->id) }}">editar</a>
+                                <form id="form_{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a class="btn btn-sm btn-danger" href="#" onclick="document.getElementById('form_{{ $product->id }}').submit()">Excluir</a>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
